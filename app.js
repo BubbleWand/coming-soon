@@ -14,6 +14,7 @@ dotenv.config({ path: ".env" });
 hbs = exphbs.create({
   defaultLayout: "main"
 });
+app.use(express.static('public'));
 app.set("views", path.join(__dirname, "views"));
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
