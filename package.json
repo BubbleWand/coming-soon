@@ -2,6 +2,7 @@
 	"name": "bubble-coming-soon",
 	"packages": {},
 	"dependencies": {
+		"@sendgrid/mail": "^7.2.0",
 		"body-parser": "^1.19.0",
 		"connect-mongo": "^3.2.0",
 		"dotenv": "^8.2.0",
