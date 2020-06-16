@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const emailSchema = new mongoose.Schema({
-  email: String
-}, { timestamps: true, unique: true });
+  email: { type: String, unique: true }
+}, { timestamps: true });
 
 
 const Email = mongoose.model('Email', emailSchema);

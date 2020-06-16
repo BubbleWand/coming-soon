@@ -11,6 +11,7 @@ const app = express();
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(session);
 const flash = require("express-flash");
+const validator = require("email-validator");
 const Email = require("./models/Email");
 
 
@@ -62,11 +63,32 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-  // send to mongo here
-  req.flash("success", { 
-    msg: `<strong>Subscribed!</strong> You will now receive release updates at <u>${req.body.email}</u>` 
-  });
-  res.redirect("/");
+  const { email } = req.body;
+  if (validator.validate(email)) { // check if email is valid
+    Email.findOne({ email }, (err, existingEmail) => { // check if user already subscribed
+      if (existingEmail) {
+        req.flash("errors", { 
+          msg: `<strong>${existingEmail.email}</strong> is already in our database.` 
+        });
+        res.redirect("/");
+      } else { // if not already in db, and if email is valid, add to db.
+        new Email({ email }).save((err) => {
+          if (err) {
+            return req.flash('errors', { msg: `<strong>Error:</strong> There was a problem storing your email in the database. Please try again.`})
+          }
+          req.flash("success", { 
+            msg: `<strong>Subscribed!</strong> You will now receive release updates at <u>${req.body.email}</u>` 
+          });
+          res.redirect("/");
+        });
+      }
+    });
+  } else {
+    req.flash("errors", { 
+      msg: `Invalid email address` 
+    });
+    res.redirect("/");
+  }
 });
 
 
