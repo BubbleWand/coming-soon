@@ -1,6 +1,7 @@
 //Dependency imports
 
 const dotenv = require("dotenv");
+dotenv.config({ path: ".env" });
 const express = require("express");
 const session = require("express-session");
 const errorHandler = require("errorhandler");
@@ -13,13 +14,13 @@ const MongoStore = require("connect-mongo")(session);
 const flash = require("express-flash");
 const validator = require("email-validator");
 sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const Email = require("./models/Email");
 
 require("./sendgrid/emails");
 
 // Middleware & configurations
 
-dotenv.config({ path: ".env" });
 hbs = exphbs.create({
   defaultLayout: "main"
 });
@@ -78,7 +79,7 @@ app.post("/", (req, res) => {
           if (err) {
             return req.flash("errors", { msg: `<strong>Error:</strong> There was a problem storing your email in the database. Please try again.`})
           }
-          sendSubscribedEmail(req, savedEmail);
+          sendSubscribedEmail(req, res, savedEmail);
         });
       }
     });
