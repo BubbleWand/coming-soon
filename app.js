@@ -91,6 +91,16 @@ app.post("/", (req, res) => {
   }
 });
 
+app.get("/unsubscribe/:subscriptionID", (req, res) => {
+  Email.deleteOne({ _id: req.params.subscriptionID }, (err) => {
+    if (err) {
+      res.send("An error ocurred while unsubscribing. Please refresh or let us know at support@blowabubble.com")
+    } else {
+      res.send("You have been unsubscribed from further emails from Bubble. If this was a mistake, sign up again at blowabubble.com")
+    }
+  })
+});
+
 
 // Error Handler.
 
