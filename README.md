@@ -1,6 +1,7 @@
 # Bubble ```coming-soon```
 
 A temporary landing page for information and email subscription sign up.
+Check us out here: http://blowabubble.com/
 
 ## Prerequisites
 
